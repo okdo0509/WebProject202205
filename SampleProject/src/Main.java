@@ -21,18 +21,12 @@ public class Main {
 		} else if (command == 2) {
 			System.out.println("조회할 동물의 종류를 말씀해주세요(1 : 닭, 2 : 돼지)");
 			int species = sc.nextInt();
-
-			int count = 0;
-
 			if (species == 1) {
-				for (Chicken chicken : chickenFarm.list) {
-					if(chicken.isAlive()) {
-						count++;
-					}
-				}
-				System.out.println("해당 동물의 재고는 " + count + "입니다.");
+				System.out.println("해당 동물의 재고는 "
+						+ chickenFarm.list.stream().filter(chicken -> chicken.isAlive() == true).count() + "입니다.");
 			} else {
-				System.out.println("해당 동물의 재고는 " + count + "입니다.");
+				System.out.println(
+						"해당 동물의 재고는 " + pigFarm.list.stream().filter(a -> a.isAlive() == true).count() + "입니다.");
 			}
 		} else if (command == 3) {
 
