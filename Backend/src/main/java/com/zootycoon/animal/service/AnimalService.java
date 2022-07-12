@@ -1,5 +1,6 @@
 package com.zootycoon.animal.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,30 +27,28 @@ public class AnimalService {
 	}
 
 	public List<AnimalVO> getAllAliveAnimalList() {
-		List<AnimalEntity> animalEntities = animalRepository.findAll();
-		List<AnimalVO> animalVOes = voMapper.toAnimalvo(animalEntities);
-		return animalVOes;
-
-	}
-
-	public List<AnimalVO> getAllAliveAlimalList() {
-		List<AnimalEntity> animalEntities = animalRepository
-				                                .findAll()
-				                                .stream()
-				                                .filter(a -> "Y".contentEquals(a.getIsAlive()))
-				                                .collect(Collectors.toList());
+		List<AnimalEntity> animalEntities = animalRepository.findAll().stream().filter(a -> "Y".equals(a.getIsAlive()))
+				.collect(Collectors.toList());
 		List<AnimalVO> animalVOes = voMapper.toAnimalvo(animalEntities);
 		return animalVOes;
 	}
+
 
 	public List<AnimalVO> getAnimalById(String id) {
-		List<AnimalEntity> animalEntities = animalRepository
-				                                 .findAll()
-				                                 .stream()
-				                                 .filter(a -> id.equals(a.getId()))
-				                                 .collect(Collectors.toList());                               
-		
+		List<AnimalEntity> animalEntities = animalRepository.findAll().stream().filter(a -> id.equals(a.getId()))
+				.collect(Collectors.toList());
+
 		List<AnimalVO> animalVOes = voMapper.toAnimalvo(animalEntities);
+		return animalVOes;
+	}
+
+	public List<AnimalVO> createAnimal(AnimalVO animalVO) {
+		AnimalEntity animalEntity = voMapper.toAnimalEntity(animalVO);
+		AnimalEntity ret = animalRepository.save(animalEntity);
+		List<AnimalEntity> animalEntities = new ArrayList<>();
+		animalEntities.add(ret);
+		List<AnimalVO> animalVOes = voMapper.toAnimalvo(animalEntities);
+		// TODO Auto-generated method stub
 		return animalVOes;
 	}
 }
